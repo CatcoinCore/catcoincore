@@ -262,10 +262,10 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0xfa;
-        pchMessageStart[1] = 0xcb;
-        pchMessageStart[2] = 0xb8;
-        pchMessageStart[3] = 0xdd;
+        pchMessageStart[0] = 0xfb;
+        pchMessageStart[1] = 0xcc;
+        pchMessageStart[2] = 0xb9;
+        pchMessageStart[3] = 0xde;
         nDefaultPort = 19933;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 0;
@@ -368,10 +368,10 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0xfa;
-        pchMessageStart[1] = 0xcc;
-        pchMessageStart[2] = 0xb9;
-        pchMessageStart[3] = 0xde;
+        pchMessageStart[0] = 0xfb;
+        pchMessageStart[1] = 0xcd;
+        pchMessageStart[2] = 0xc0;
+        pchMessageStart[3] = 0xdf;
         nDefaultPort = 18933;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 0;
@@ -474,10 +474,10 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0xfa;
-        pchMessageStart[1] = 0xcd;
-        pchMessageStart[2] = 0xc0;
-        pchMessageStart[3] = 0xdf;
+        pchMessageStart[0] = 0xfb;
+        pchMessageStart[1] = 0xce;
+        pchMessageStart[2] = 0xc1;
+        pchMessageStart[3] = 0xd0;
         nDefaultPort = 17933;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 0;
@@ -580,10 +580,10 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0xfa;
-        pchMessageStart[1] = 0xce;
-        pchMessageStart[2] = 0xc1;
-        pchMessageStart[3] = 0xd0;
+        pchMessageStart[0] = 0xfb;
+        pchMessageStart[1] = 0xcf;
+        pchMessageStart[2] = 0xc2;
+        pchMessageStart[3] = 0xd1;
         nDefaultPort = 16933;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 0;
@@ -686,10 +686,10 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0xfa;
-        pchMessageStart[1] = 0xcf;
-        pchMessageStart[2] = 0xc2;
-        pchMessageStart[3] = 0xd1;
+        pchMessageStart[0] = 0xfb;
+        pchMessageStart[1] = 0xc0;
+        pchMessageStart[2] = 0xc3;
+        pchMessageStart[3] = 0xd2;
         nDefaultPort = 15933;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 0;
