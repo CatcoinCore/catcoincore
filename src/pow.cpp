@@ -323,75 +323,7 @@ unsigned int GetNextWorkRequired_CIP05(const CBlockIndex* pindexLast, const CBlo
 
 unsigned int GetNextWorkRequired_CIP06(const CBlockIndex* pindexLast, const CBlockHeader* pblock, const Consensus::Params& params)
 {
-        assert(pindexLast != nullptr);
-    const int64_t T = params.nPowTargetSpacing;
-
-    // For T=600 use N=288 (takes 2 days to fully respond to hashrate changes) and has
-    //  a StdDev of N^(-0.5) which will often be the change in difficulty in N/4 blocks when hashrate is
-    // constant. 10% of blocks will have an error >2x the StdDev above or below where D should be.
-    //  This N=288 is like N=144 in ASERT which is N=144*ln(2)=100 in
-    // terms of BCH's ASERT.  BCH's ASERT uses N=288 which is like 2*288/ln(2) = 831 = N for
-    // LWMA. ASERT and LWMA are almost indistinguishable once this adjustment to N is used. In other words,
-    // 831/144 = 5.8 means my N=144 recommendation for T=600 is 5.8 times faster but SQRT(5.8) less
-    // stability than BCH's ASERT. The StdDev for 288 is 6%, so 12% accidental variation will be see in 10% of blocks.
-    // Twice 288 is 576 which will have 4.2% StdDev and be 2x slower. This is reasonable for T=300 or less.
-    // For T = 60, N=1,000 will have 3% StdDev & maybe plenty fast, but require 1M multiplications & additions per
-    // 1,000 blocks for validation which might be a consideration. I would not go over N=576 and prefer 360
-    // so that it can respond in 6 hours to hashrate changes.
-
-    const int64_t N = 45;
-
-    // Define a k that will be used to get a proper average after weighting the solvetimes.
-    const int64_t k = N * (N + 1) * T / 2;
-
-    const int64_t height = pindexLast->nHeight;
-    const arith_uint256 powLimit = UintToArith256(params.powLimit);
-
-    // New coins just "give away" first N blocks. It's better to guess
-    // this value instead of using powLimit, but err on high side to not get stuck.
-    if (height < N) {
-        return powLimit.GetCompact();
-    }
-
-    arith_uint256 avgTarget, nextTarget;
-    int64_t thisTimestamp, previousTimestamp;
-    int64_t sumWeightedSolvetimes = 0, j = 0;
-
-    const CBlockIndex* blockPreviousTimestamp = pindexLast->GetAncestor(height - N);
-    previousTimestamp = blockPreviousTimestamp->GetBlockTime();
-
-    // Loop through N most recent blocks.
-    for (int64_t i = height - N + 1; i <= height; i++) {
-        const CBlockIndex* block = pindexLast->GetAncestor(i);
-
-        // Prevent solvetimes from being negative in a safe way. It must be done like this.
-        // Do not attempt anything like  if (solvetime < 1) {solvetime=1;}
-        // The +1 ensures new coins do not calculate nextTarget = 0.
-        thisTimestamp = (block->GetBlockTime() > previousTimestamp) ?
-                            block->GetBlockTime() :
-                            previousTimestamp + 1;
-
-        // 6*T limit prevents large drops in diff from long solvetimes which would cause oscillations.
-        int64_t solvetime = std::min(6 * T, thisTimestamp - previousTimestamp);
-
-        // The following is part of "preventing negative solvetimes".
-        previousTimestamp = thisTimestamp;
-
-        // Give linearly higher weight to more recent solvetimes.
-        j++;
-        sumWeightedSolvetimes += solvetime * j;
-
-        arith_uint256 target;
-        target.SetCompact(block->nBits);
-        avgTarget += target / N / k; // Dividing by k here prevents an overflow below.
-    }
-    nextTarget = avgTarget * sumWeightedSolvetimes;
-
-    if (nextTarget > powLimit) {
-        nextTarget = powLimit;
-    }
-
-    return nextTarget.GetCompact();
+    return GetNextWorkRequired_LWMA(pindexLast, pblock, params);
 }
 
 unsigned int GetNextWorkRequired_CIP07(const CBlockIndex* pindexLast, const CBlockHeader* pblock, const Consensus::Params& params)
@@ -412,7 +344,7 @@ unsigned int GetNextWorkRequired_CIP07(const CBlockIndex* pindexLast, const CBlo
     // 1,000 blocks for validation which might be a consideration. I would not go over N=576 and prefer 360
     // so that it can respond in 6 hours to hashrate changes.
 
-    const int64_t N = 144;
+    const int64_t N = 72;
 
     // Define a k that will be used to get a proper average after weighting the solvetimes.
     const int64_t k = N * (N + 1) * T / 2;
@@ -469,219 +401,17 @@ unsigned int GetNextWorkRequired_CIP07(const CBlockIndex* pindexLast, const CBlo
 
 unsigned int GetNextWorkRequired_CIP08(const CBlockIndex* pindexLast, const CBlockHeader* pblock, const Consensus::Params& params)
 {
-    assert(pindexLast != nullptr);
-    const int64_t T = params.nPowTargetSpacing;
-
-    // For T=600 use N=288 (takes 2 days to fully respond to hashrate changes) and has
-    //  a StdDev of N^(-0.5) which will often be the change in difficulty in N/4 blocks when hashrate is
-    // constant. 10% of blocks will have an error >2x the StdDev above or below where D should be.
-    //  This N=288 is like N=144 in ASERT which is N=144*ln(2)=100 in
-    // terms of BCH's ASERT.  BCH's ASERT uses N=288 which is like 2*288/ln(2) = 831 = N for
-    // LWMA. ASERT and LWMA are almost indistinguishable once this adjustment to N is used. In other words,
-    // 831/144 = 5.8 means my N=144 recommendation for T=600 is 5.8 times faster but SQRT(5.8) less
-    // stability than BCH's ASERT. The StdDev for 288 is 6%, so 12% accidental variation will be see in 10% of blocks.
-    // Twice 288 is 576 which will have 4.2% StdDev and be 2x slower. This is reasonable for T=300 or less.
-    // For T = 60, N=1,000 will have 3% StdDev & maybe plenty fast, but require 1M multiplications & additions per
-    // 1,000 blocks for validation which might be a consideration. I would not go over N=576 and prefer 360
-    // so that it can respond in 6 hours to hashrate changes.
-
-    const int64_t N = 288;
-
-    // Define a k that will be used to get a proper average after weighting the solvetimes.
-    const int64_t k = N * (N + 1) * T / 2;
-
-    const int64_t height = pindexLast->nHeight;
-    const arith_uint256 powLimit = UintToArith256(params.powLimit);
-
-    // New coins just "give away" first N blocks. It's better to guess
-    // this value instead of using powLimit, but err on high side to not get stuck.
-    if (height < N) {
-        return powLimit.GetCompact();
-    }
-
-    arith_uint256 avgTarget, nextTarget;
-    int64_t thisTimestamp, previousTimestamp;
-    int64_t sumWeightedSolvetimes = 0, j = 0;
-
-    const CBlockIndex* blockPreviousTimestamp = pindexLast->GetAncestor(height - N);
-    previousTimestamp = blockPreviousTimestamp->GetBlockTime();
-
-    // Loop through N most recent blocks.
-    for (int64_t i = height - N + 1; i <= height; i++) {
-        const CBlockIndex* block = pindexLast->GetAncestor(i);
-
-        // Prevent solvetimes from being negative in a safe way. It must be done like this.
-        // Do not attempt anything like  if (solvetime < 1) {solvetime=1;}
-        // The +1 ensures new coins do not calculate nextTarget = 0.
-        thisTimestamp = (block->GetBlockTime() > previousTimestamp) ?
-                            block->GetBlockTime() :
-                            previousTimestamp + 1;
-
-        // 6*T limit prevents large drops in diff from long solvetimes which would cause oscillations.
-        int64_t solvetime = std::min(6 * T, thisTimestamp - previousTimestamp);
-
-        // The following is part of "preventing negative solvetimes".
-        previousTimestamp = thisTimestamp;
-
-        // Give linearly higher weight to more recent solvetimes.
-        j++;
-        sumWeightedSolvetimes += solvetime * j;
-
-        arith_uint256 target;
-        target.SetCompact(block->nBits);
-        avgTarget += target / N / k; // Dividing by k here prevents an overflow below.
-    }
-    nextTarget = avgTarget * sumWeightedSolvetimes;
-
-    if (nextTarget > powLimit) {
-        nextTarget = powLimit;
-    }
-
-    return nextTarget.GetCompact();
+    return GetNextWorkRequired_LWMA(pindexLast, pblock, params);
 }
 
 unsigned int GetNextWorkRequired_CIP09(const CBlockIndex* pindexLast, const CBlockHeader* pblock, const Consensus::Params& params)
 {
-    const CBlockIndex *BlockLastSolved = pindexLast;
-    const CBlockIndex *BlockReading = pindexLast;
-    int64_t nActualTimespan = 0;
-    int64_t LastBlockTime = 0;
-    int64_t PastBlocksMin = 36;
-    int64_t PastBlocksMax = 36;
-    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
-
-    int64_t CountBlocks = 0;
-    arith_uint256 PastDifficultyAverage;
-    arith_uint256 PastDifficultyAveragePrev;
-
-    if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || BlockLastSolved->nHeight < PastBlocksMin) {
-        return nProofOfWorkLimit;
-    }
-
-    for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
-        if (PastBlocksMax > 0 && i > PastBlocksMax) { 
-            break; 
-        }
-        CountBlocks++;
-
-        if (CountBlocks <= PastBlocksMin) {
-            if (CountBlocks == 1)
-            {
-                PastDifficultyAverage.SetCompact(BlockReading->nBits);
-            }
-            else
-            { 
-                PastDifficultyAverage = ((PastDifficultyAveragePrev * CountBlocks)+(arith_uint256().SetCompact(BlockReading->nBits))) / (CountBlocks+1); 
-            }
-            PastDifficultyAveragePrev = PastDifficultyAverage;
-        }
-
-        if (LastBlockTime > 0) {
-            int64_t Diff = (LastBlockTime - BlockReading->GetBlockTime());
-            nActualTimespan += Diff;
-        }
-        LastBlockTime = BlockReading->GetBlockTime();
-
-        if (BlockReading->pprev == NULL) {
-            assert(BlockReading); 
-            break;
-        }
-        BlockReading = BlockReading->pprev;
-    }
-
-    arith_uint256 bnNew(PastDifficultyAverage);
-
-    --CountBlocks;
-
-    int64_t nTargetTimespan = CountBlocks * params.nPowTargetSpacing;
-    
-    if (nActualTimespan < nTargetTimespan/2)
-        nActualTimespan = nTargetTimespan/2;
-    if (nActualTimespan > nTargetTimespan*2)
-        nActualTimespan = nTargetTimespan*2;
-
-    // Retarget
-    bnNew *= nActualTimespan;
-    bnNew /= nTargetTimespan;
-
-    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
-    if (bnNew > bnPowLimit) {
-        bnNew = bnPowLimit;
-    }
-
-    return bnNew.GetCompact();
+    return GetNextWorkRequired_LWMA(pindexLast, pblock, params);
 }
 
 unsigned int GetNextWorkRequired_CIP10(const CBlockIndex* pindexLast, const CBlockHeader* pblock, const Consensus::Params& params)
 {
-    const CBlockIndex *BlockLastSolved = pindexLast;
-    const CBlockIndex *BlockReading = pindexLast;
-    int64_t nActualTimespan = 0;
-    int64_t LastBlockTime = 0;
-    int64_t PastBlocksMin = 72;
-    int64_t PastBlocksMax = 72;
-    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
-
-    int64_t CountBlocks = 0;
-    arith_uint256 PastDifficultyAverage;
-    arith_uint256 PastDifficultyAveragePrev;
-
-    if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || BlockLastSolved->nHeight < PastBlocksMin) {
-        return nProofOfWorkLimit;
-    }
-
-    for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
-        if (PastBlocksMax > 0 && i > PastBlocksMax) { 
-            break; 
-        }
-        CountBlocks++;
-
-        if (CountBlocks <= PastBlocksMin) {
-            if (CountBlocks == 1)
-            {
-                PastDifficultyAverage.SetCompact(BlockReading->nBits);
-            }
-            else
-            { 
-                PastDifficultyAverage = ((PastDifficultyAveragePrev * CountBlocks)+(arith_uint256().SetCompact(BlockReading->nBits))) / (CountBlocks+1); 
-            }
-            PastDifficultyAveragePrev = PastDifficultyAverage;
-        }
-
-        if (LastBlockTime > 0) {
-            int64_t Diff = (LastBlockTime - BlockReading->GetBlockTime());
-            nActualTimespan += Diff;
-        }
-        LastBlockTime = BlockReading->GetBlockTime();
-
-        if (BlockReading->pprev == NULL) {
-            assert(BlockReading); 
-            break;
-        }
-        BlockReading = BlockReading->pprev;
-    }
-
-    arith_uint256 bnNew(PastDifficultyAverage);
-
-    --CountBlocks;
-
-    int64_t nTargetTimespan = CountBlocks * params.nPowTargetSpacing;
-    
-    if (nActualTimespan < nTargetTimespan/2)
-        nActualTimespan = nTargetTimespan/2;
-    if (nActualTimespan > nTargetTimespan*2)
-        nActualTimespan = nTargetTimespan*2;
-
-    // Retarget
-    bnNew *= nActualTimespan;
-    bnNew /= nTargetTimespan;
-
-    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
-    if (bnNew > bnPowLimit) {
-        bnNew = bnPowLimit;
-    }
-
-    return bnNew.GetCompact();
+    return GetNextWorkRequired_LWMA(pindexLast, pblock, params);
 }
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader* pblock, const Consensus::Params& params)
