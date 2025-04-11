@@ -134,7 +134,7 @@ public:
 
         // All of these require a new core-node on release
         vSeeds.emplace_back("catcoin.seeds.multicoin.co"); // Run by ahmedbodi of multicoin.co Pool
-        vSeeds.emplace_back("catalyst.ovh"); // its_only_mathijs
+        vSeeds.emplace_back("dnsseed.catalyst.ovh"); // its_only_mathijs
         vSeeds.emplace_back("dnsseed.catcointomars.top"); // Skinlin
         vSeeds.emplace_back("dnsseed.wildcat.ovh"); // CMinor
         vSeeds.emplace_back("dnsseed.ogcatcoin.org"); // TheCrippledStreamer, Currently Broken
