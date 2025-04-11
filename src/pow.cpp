@@ -461,6 +461,9 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
     if (pindexLast->nHeight < params.CIP04Height)
         return GetNextWorkRequired_CIP04(pindexLast, pblock, params);
 
+    if (pindexLast->nHeight < params.CIP05Height)
+        return GetNextWorkRequired_CIP05(pindexLast, pblock, params);
+    
     auto network = Params().NetworkIDString();
     if (network == CBaseChainParams::TESTNET1) {
         return GetNextWorkRequired_CIP06(pindexLast, pblock, params);
@@ -473,7 +476,7 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
     } else if (network == CBaseChainParams::TESTNET5) {
         return GetNextWorkRequired_CIP10(pindexLast, pblock, params);
     }
-    return GetNextWorkRequired_CIP05(pindexLast, pblock, params);
+    return GetNextWorkRequired_CIP06(pindexLast, pblock, params);
 }
 
 bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params& params)

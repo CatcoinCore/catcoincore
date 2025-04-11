@@ -78,6 +78,7 @@ struct Params {
     int CIP02Height; // Catcoin Improvement Proposal 02 - Change Retarget Interval to every block
     int CIP03Height; // Catcoin Improvement Proposal 03 - Change back to 36 Block Retarget Interval with different params
     int CIP04Height; // Catcoin Improvement Proposal 04 - Switch to Dynamically changing Retargetting Algorithm (PIDv1 + DigiShield)
+    int CIP05Height; // Catcoin Improvement Proposal 05 - Switch to LWMA
     /**
      * Minimum blocks including miner confirmation of the total of 2016 blocks in a retargeting period,
      * (nPowTargetTimespan / nPowTargetSpacing) which is also used for BIP9 deployments.

@@ -78,6 +78,7 @@ public:
         consensus.CIP02Height = 21346;
         consensus.CIP03Height = 27260;
         consensus.CIP04Height = 46331;
+        consensus.CIP05Height = 390925;
         consensus.MinBIP9WarningHeight = 4600000; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespanV1 = 14 * 24 * 60 * 60;
@@ -130,9 +131,23 @@ public:
         // This is fine at runtime as we'll fall back to using them as an addrfetch if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
+
+        // All of these require a new core-node on release
         vSeeds.emplace_back("catcoin.seeds.multicoin.co"); // Run by ahmedbodi of multicoin.co Pool
+        vSeeds.emplace_back("catalyst.ovh"); // its_only_mathijs
+        vSeeds.emplace_back("dnsseed.catcointomars.top"); // Skinlin
+        vSeeds.emplace_back("dnsseed.wildcat.ovh"); // CMinor
+        vSeeds.emplace_back("dnsseed.ogcatcoin.org"); // TheCrippledStreamer, Currently Broken
+        vSeeds.emplace_back("dnsseed.catcoin.ovh"); // Navin
+        vSeeds.emplace_back("dnsseed.bcats.top"); // staygoldcrypto.com
+        vSeeds.emplace_back("dnsseed.jjcatcoin.top"); // JJ - 2mars.biz and JJ-Com Tech
+        vSeeds.emplace_back("dnsseed.catsonmylap.top"); // def [etica-stats.org]
+        vSeeds.emplace_back("dnsseed.kr105.com"); // kr105
+        vSeeds.emplace_back("dnsseed.remembermeasyoupassby.top"); // lambourghini_eth
+
+        // Legacy Wallet
         vSeeds.emplace_back("seed.catcoinwallets.com"); // https://github.com/CatcoinOfficial/CatcoinRelease/blob/c69cc7050a6a1e1e6aa8c34bac2c1f8dad0037a1/src/main.cpp#L3325
-        vSeeds.emplace_back("cat.geekhash.org");
+        vSeeds.emplace_back("cat.geekhash.org"); // GeekHash Pool
         
 
         // https://github.com/CatcoinOfficial/CatcoinRelease/blob/master/src/base58.h#L275C30-L275C89
@@ -195,15 +210,16 @@ public:
 		        {75000, uint256S("0x5607029768611e1e29294cd5987845497c2c681ee2917311ec8cf3b65e61e1c8")},
 		        {100000,uint256S("0x956ca160d703130bce1422ce407eac53064565bfd357fc8ac73e1a7dda9d5764")},
 		        {116828,uint256S("0x750e549a03bcc7f582c7857c162cde7cfbeb6de91cccaf794cbe6337518d6c4c")},
+                {390841,uint256S("0x28323c186e997b981ce1046145af0b63dd25839b9024afe04e5e711fd61e3d84")},
             }
         };
 
         // https://github.com/CatcoinOfficial/CatcoinRelease/blob/master/src/checkpoints.cpp#L83
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 4096 62e2e3d21343a00994d38a63524867507dbeee6850e8fbf02e9c47a3ccf82f24
-            /* nTime    */ 1721605648,
-            /* nTxCount */ 541203,
-            /* dTxRate  */ 0.001525724006013679,
+            // Data from rpc: getchaintxstats 4096 28323c186e997b981ce1046145af0b63dd25839b9024afe04e5e711fd61e3d84
+            /* nTime    */ 1744234908,
+            /* nTxCount */ 571874,
+            /* dTxRate  */ 0.000943014641769317,
         };
     }
 };
@@ -229,6 +245,7 @@ public:
         consensus.CIP02Height = 50;
         consensus.CIP03Height = 100;
         consensus.CIP04Height = 150;
+        consensus.CIP05Height = 1000;
         consensus.MinBIP9WarningHeight = 46000; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespanV1 = 14 * 24 * 60 * 60;
@@ -335,6 +352,7 @@ public:
         consensus.CIP02Height = 50;
         consensus.CIP03Height = 100;
         consensus.CIP04Height = 150;
+        consensus.CIP05Height = 1000;
         consensus.MinBIP9WarningHeight = 46000; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespanV1 = 14 * 24 * 60 * 60;
@@ -441,6 +459,7 @@ public:
         consensus.CIP02Height = 50;
         consensus.CIP03Height = 100;
         consensus.CIP04Height = 150;
+        consensus.CIP05Height = 1000;
         consensus.MinBIP9WarningHeight = 46000; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespanV1 = 14 * 24 * 60 * 60;
@@ -547,6 +566,7 @@ public:
         consensus.CIP02Height = 50;
         consensus.CIP03Height = 100;
         consensus.CIP04Height = 150;
+        consensus.CIP05Height = 1000;
         consensus.MinBIP9WarningHeight = 46000; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespanV1 = 14 * 24 * 60 * 60;
@@ -653,6 +673,7 @@ public:
         consensus.CIP02Height = 50;
         consensus.CIP03Height = 100;
         consensus.CIP04Height = 150;
+        consensus.CIP05Height = 1000;
         consensus.MinBIP9WarningHeight = 46000; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespanV1 = 14 * 24 * 60 * 60;
@@ -759,6 +780,7 @@ public:
         consensus.CIP02Height = 0;
         consensus.CIP03Height = 0;
         consensus.CIP04Height = 0;
+        consensus.CIP05Height = 0;
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespanV1 = 14 * 24 * 60 * 60;
