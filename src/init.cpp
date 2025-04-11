@@ -615,7 +615,7 @@ std::string LicenseInfo()
                        "Visit %s for further information about the software.").translated,
                PACKAGE_NAME, "<" PACKAGE_URL ">") +
            "\n" +
-           strprintf(_("The source code is available from %s.").translated,
+           strprintf(_("The source code adapted from Litecoin v0.21.3 is available from %s.").translated,
                URL_SOURCE_CODE) +
            "\n" +
            "\n" +
