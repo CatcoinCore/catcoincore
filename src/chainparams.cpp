@@ -142,7 +142,7 @@ public:
         vSeeds.emplace_back("dnsseed.bcats.top"); // staygoldcrypto.com
         vSeeds.emplace_back("dnsseed.jjcatcoin.top"); // JJ - 2mars.biz and JJ-Com Tech
         vSeeds.emplace_back("dnsseed.catsonmylap.top"); // def [etica-stats.org]
-        vSeeds.emplace_back("dnsseed.kr105.com"); // kr105
+        vSeeds.emplace_back("dnsseed.catcoin.party"); // kr105
         vSeeds.emplace_back("dnsseed.remembermeasyoupassby.top"); // lambourghini_eth
 
         // Legacy Wallet
