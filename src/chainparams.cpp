@@ -78,7 +78,7 @@ public:
         consensus.CIP02Height = 21346;
         consensus.CIP03Height = 27260;
         consensus.CIP04Height = 46331;
-        consensus.CIP05Height = 390925;
+        consensus.CIP05Height = 397000;
         consensus.MinBIP9WarningHeight = 4600000; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespanV1 = 14 * 24 * 60 * 60;
