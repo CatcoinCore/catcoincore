@@ -56,8 +56,8 @@ jobs:
 
           - name: macOS 10.12
             os: ubuntu-24.04
-            host: x86_64-apple-darwin16
-            apt_get: cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python3-dev python3-setuptools
+            host: x86_64-apple-darwin18
+            apt_get: cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python3-dev python3-setuptools python3-setuptools xorriso
             XCODE_VERSION: 12.1
             XCODE_BUILD_ID: 12A7403
 
@@ -178,8 +178,8 @@ jobs:
           - name: macOS 10.12
             id: macOS10.12
             os: ubuntu-24.04
-            host: x86_64-apple-darwin16
-            apt_get: cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python3-dev python3-setuptools
+            host: x86_64-apple-darwin18
+            apt_get: cmake imagemagick libcap-dev librsvg2-bin libz-dev libbz2-dev libtiff-tools python3-dev python3-setuptools xorriso
             XCODE_VERSION: 12.1
             XCODE_BUILD_ID: 12A7403
             unit_tests: false
@@ -365,21 +365,21 @@ jobs:
 
       - name: Upload Release Mac Builds
         uses: softprops/action-gh-release@v0.1.15
-        if: matrix.config.host == 'x86_64-apple-darwin16' && github.event.inputs.release == 'true'
+        if: matrix.config.host == 'x86_64-apple-darwin18' && github.event.inputs.release == 'true'
         with:
           name: ${{ github.event.inputs.release-name }}
           tag_name: ${{ github.event.inputs.tags }}
           prerelease: false
-          files: /home/runner/work/catcoincore/catcoincore/build/Catcoin-x86_64-apple-darwin16/Catcoin-Core-Beta.dmg
+          files: /home/runner/work/catcoincore/catcoincore/build/Catcoin-x86_64-apple-darwin18/Catcoin-Core-Beta.dmg
 
       - name: Upload PreRelease Mac Builds
         uses: softprops/action-gh-release@v0.1.15
-        if: matrix.config.host == 'x86_64-apple-darwin16' && github.event.inputs.release == 'false'
+        if: matrix.config.host == 'x86_64-apple-darwin18' && github.event.inputs.release == 'false'
         with:
           name: ${{ github.event.inputs.release-name }}
           tag_name: ${{ github.event.inputs.tags }}
           prerelease: true
-          files: /home/runner/work/catcoincore/catcoincore/build/Catcoin-x86_64-apple-darwin16/Catcoin-Core-Beta.dmg
+          files: /home/runner/work/catcoincore/catcoincore/build/Catcoin-x86_64-apple-darwin18/Catcoin-Core-Beta.dmg
 
       - name: Upload Release AArch Builds
         uses: softprops/action-gh-release@v0.1.15
