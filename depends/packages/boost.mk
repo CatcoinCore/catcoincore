@@ -35,8 +35,6 @@ endef
 define $(package)_preprocess_cmds
   patch -p1 < $($(package)_patch_dir)/unused_var_in_process.patch && \
   patch -p2 -i $($(package)_patch_dir)/ignore_wnonnull_gcc_11.patch && \
-  patch -p2 -i $($(package)_patch_dir)/commit-74fb0a2.patch && \
-  patch -p2 -i $($(package)_patch_dir)/commit-f9d0e59.patch && \
   echo "using $($(package)_toolset_$(host_os)) : : $($(package)_cxx) : <cxxflags>\"$($(package)_cxxflags) $($(package)_cppflags)\" <linkflags>\"$($(package)_ldflags)\" <archiver>\"$($(package)_archiver_$(host_os))\" <striper>\"$(host_STRIP)\"  <ranlib>\"$(host_RANLIB)\" <rc>\"$(host_WINDRES)\" : ;" > user-config.jam
 endef
 
