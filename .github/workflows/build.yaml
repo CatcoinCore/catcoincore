@@ -141,7 +141,7 @@ jobs:
             goal: install
             # -Wno-psabi is to disable ABI warnings: "note: parameter passing for argument of type ... changed in GCC 7.1"
             # This could be removed once the ABI change warning does not show up by default
-            BITCOIN_CONFIG: "--with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports --disable-online-rust CXXFLAGS=-Wno-psabi --disable-tests --disable-bench"
+            BITCOIN_CONFIG: "--with-gui=auto --enable-glibc-back-compat --enable-reduce-exports --disable-online-rust CXXFLAGS=-Wno-psabi --disable-tests --disable-bench"
 
           - name: AARCH64
             id: ARM64
@@ -151,7 +151,7 @@ jobs:
             unit_tests: false
             functional_tests: false
             goal: install
-            BITCOIN_CONFIG: "--with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports --disable-online-rust --disable-tests --disable-bench"
+            BITCOIN_CONFIG: "--with-gui=auto --enable-glibc-back-compat --enable-reduce-exports --disable-online-rust --disable-tests --disable-bench"
 
           - name: Win64
             id: Win64
@@ -173,7 +173,7 @@ jobs:
             functional_tests: false
             goal: install
             test_runner_extra: "--coverage --all  --exclude feature_dbcrash"
-            BITCOIN_CONFIG: "--enable-zmq --with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports --disable-online-rust --disable-tests --disable-bench"
+            BITCOIN_CONFIG: "--enable-zmq --with-gui=auto --enable-glibc-back-compat --enable-reduce-exports --disable-online-rust --disable-tests --disable-bench"
 
           - name: macOS 10.12
             id: macOS10.12
