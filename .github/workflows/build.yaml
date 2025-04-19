@@ -370,7 +370,7 @@ jobs:
           name: ${{ github.event.inputs.release-name }}
           tag_name: ${{ github.event.inputs.tags }}
           prerelease: false
-          files: /home/runner/work/catcoincore/catcoincore/build/Catcoin-x86_64-apple-darwin18/Catcoin-Core.dmg
+          files: /home/runner/work/catcoincore/catcoincore/build/catcoin-x86_64-apple-darwin18/Catcoin-Core.dmg
 
       - name: Upload PreRelease Mac Builds
         uses: softprops/action-gh-release@v0.1.15
@@ -379,7 +379,7 @@ jobs:
           name: ${{ github.event.inputs.release-name }}
           tag_name: ${{ github.event.inputs.tags }}
           prerelease: true
-          files: /home/runner/work/catcoincore/catcoincore/build/Catcoin-x86_64-apple-darwin18/Catcoin-Core.dmg
+          files: /home/runner/work/catcoincore/catcoincore/build/catcoin-x86_64-apple-darwin18/Catcoin-Core.dmg
 
       - name: Upload Release AArch Builds
         uses: softprops/action-gh-release@v0.1.15
